@@ -51,7 +51,6 @@ class customer implements subscriber {
 
     update(avaliablity: boolean) {
         console.log(this.name + " got notified and Avaliablity changed to " + avaliablity);
-        avaliablity ? console.log("Phone is Avaliable") : console.log("Phone is Unavaliable");
     }   
 }
 
@@ -59,8 +58,6 @@ let localstore  = new store();
 
 let customer1 = new customer(localstore, "cust1");
 let customer2 = new customer(localstore, "cust2");
-let customer3 = new customer(localstore, "cust3");
-let customer4 = new customer(localstore, "cust4");
 
 localstore.setAvaliablity(true);
 
