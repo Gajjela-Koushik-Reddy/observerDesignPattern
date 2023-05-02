@@ -68,4 +68,3 @@ localstore.removeSubscriber(customer1);
 
 localstore.setAvaliablity(true);
 
-localstore.setAvaliablity(true);

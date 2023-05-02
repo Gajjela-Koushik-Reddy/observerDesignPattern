@@ -1,62 +1,44 @@
-interface Subject {
-    registerObserver(o: observer): void;
-    removeObserver(o: observer): void;
+interface publisher {
+    registerObserver(o: subscriber): void;
+    removeObserver(o: subscriber): void;
     notifyObservers(): void;
 }
 
-interface observer {
-    update(temperature: number,  humidity: number, pressure: number): void;
+interface subscriber {
+    update(temperature: number): void;
 }
 
-class WeatherStation implements Subject {
-    private observers: observer[] = [];
+class WeatherStation implements publisher {
+    private observers: subscriber[] = [];
     private temperature: number;
-    private humidity: number;
-    private pressure: number;
 
-    registerObserver(o: observer): void {
+    registerObserver(o: subscriber): void {
         this.observers.push(o);
     }
 
-    removeObserver(o: observer): void {
+    removeObserver(o: subscriber): void {
         let index = this.observers.indexOf(o);
         this.observers.splice(index, 1);
     }
 
     notifyObservers(): void {
         for (let observer of this.observers) {
-            observer.update(this.temperature,  this.humidity, this.pressure);
+            observer.update(this.temperature);
         }
     }
 
-    setMetrics(temperature: number, humidity: number, pressure: number) { 
+    setMetrics(temperature: number) { 
         this.temperature = temperature;
-        this.humidity = humidity;
-        this.pressure = pressure;
+
         console.log('*Weather Station Data Updated*');
         this.notifyObservers();
     }
 }
 
-class Phone implements observer {
-    private subject: Subject;
+class Thermostat implements subscriber {
+    private subject: publisher;
 
-    constructor(weatherStation: Subject) {
-        this.subject = weatherStation;
-        weatherStation.registerObserver(this);
-    }
-
-    update(temperature: number,  humidity: number, pressure: number): void {
-        console.log(`Phone Data: \n\tTemperature: ${temperature},  \n\tHumidity: ${humidity},\n\tPressure: ${pressure}`);
-    }
-
-    // Logic
-}
-
-class Thermostat implements observer {
-    private subject: Subject;
-
-    constructor(weatherStation: Subject) {
+    constructor(weatherStation: publisher) {
         this.subject = weatherStation;
         weatherStation.registerObserver(this);
     }
@@ -68,42 +50,9 @@ class Thermostat implements observer {
     // Logic
 }
 
-class Car implements observer {
-    private subject: Subject;
-
-    constructor(weatherStation: Subject) {
-        this.subject = weatherStation;
-        weatherStation.registerObserver(this);
-    }
-
-    update(temperature: number,  humidity: number, pressure: number): void {
-        console.log(`Car Data: \n\tTemperature: ${temperature},  \n\tHumidity: ${humidity},\n\tPressure: ${pressure}`);
-    }
-
-    // Logic
-}
-
-class Airport implements observer {
-    private subject: Subject;
-
-    constructor(weatherStation: Subject) {
-        this.subject = weatherStation;
-        weatherStation.registerObserver(this);
-    }
-
-    update(temperature: number,  humidity: number, pressure: number): void {
-        console.log(`Airport Data: \n\tTemperature: ${temperature},  \n\tHumidity: ${humidity},\n\tPressure: ${pressure}`);
-    }
-
-    // Logic
-}
 
 let weatherStation = new WeatherStation();
 
-let phone = new Phone(weatherStation);
 let thermostat = new Thermostat(weatherStation);
-let car = new Car(weatherStation);
-let airport = new Airport(weatherStation);
 
-weatherStation.setMetrics(20, 30, 40);
-weatherStation.setMetrics(50, 60, 70);
+weatherStation.setMetrics(20);

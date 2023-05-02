@@ -38,8 +38,8 @@ var customer = /** @class */ (function () {
 var localstore = new store();
 var customer1 = new customer(localstore, "cust1");
 var customer2 = new customer(localstore, "cust2");
-localstore.setAvaliablity(true);
+var customer3 = new customer(localstore, "cust3");
+var customer4 = new customer(localstore, "cust4");
 localstore.setAvaliablity(true);
 localstore.removeSubscriber(customer1);
-localstore.setAvaliablity(true);
 localstore.setAvaliablity(true);
